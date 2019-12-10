@@ -8,6 +8,7 @@
           ref="pictureInput"
           margin="16"
           accept="image/*"
+          :hideChangeButton="true"
           size="10"
           button-class="btn"
           :custom-strings="{
@@ -22,7 +23,6 @@
 </template>
 <script>
 import PictureInput from "vue-picture-input";
-import { mapActions } from "vuex";
 
 export default {
   components: { PictureInput },
@@ -30,14 +30,14 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(["sourceImageSet"]),
-
     onChange(image) {
       console.log("Resim seçildi");
       if (image) {
         console.log("Resim Yüklendi");
-        this.sourceImageSet(image);
-        router.push({ name: "pre-process" });
+        this.$store.dispatch("sourceImageSet", image);
+        setTimeout(() => {
+          this.$router.push({ name: "pre-process" });
+        }, 1000);
       } else {
         console.log("Ahbab yanlış yoldasın!!");
       }

@@ -5,15 +5,15 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       imageData: null
     };
   },
-  computed: {
-    ...mapGetters({ imageData: "sourceImageGetters" })
+  computed: {},
+  created() {
+    this.imageData = this.$store.getters.sourceImageGetters;
   }
 };
 </script>

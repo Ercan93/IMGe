@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import store from "./store"
-import routes from "./routes"
 import VueRouter from "vue-router"
+import routes from "./routes"
 
 import 'bootswatch/dist/sketchy/bootstrap.min.css';
 
@@ -12,6 +12,6 @@ const router = new VueRouter({ mode: 'history', routes });
 new Vue({
         el: '#app',
         store,
-        routes,
+        router,
         render: h => h(App)
 })
