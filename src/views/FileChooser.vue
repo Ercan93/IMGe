@@ -22,20 +22,22 @@
 </template>
 <script>
 import PictureInput from "vue-picture-input";
+import { mapActions } from "vuex";
+
 export default {
   components: { PictureInput },
   data() {
-    return {
-      resimdata: null
-    };
+    return {};
   },
   methods: {
+    ...mapActions(["sourceImageSet"]),
+
     onChange(image) {
       console.log("Resim seçildi");
-      this.resimdata = image;
       if (image) {
         console.log("Resim Yüklendi");
-        this.image = image;
+        this.sourceImageSet(image);
+        router.push({ name: "pre-process" });
       } else {
         console.log("Ahbab yanlış yoldasın!!");
       }
