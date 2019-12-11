@@ -2,9 +2,8 @@
   <div class="jumb">
     <span class="badge badge-success head-text">PreProcess Menu</span>
     <div class="jumbotron bg-info">
-      <img :src="imageData" width="300px" height="300px" alt />
       <div class="process-buttons">
-        <button class="btn btn-success head-text">Birinci işlem</button>
+        <button class="btn btn-success head-text" @click="grayScale">Gray Scale</button>
         <button class="btn btn-success head-text">Birinci işlem</button>
         <button class="btn btn-success head-text">Birinci işlem</button>
         <button class="btn btn-success head-text">Birinci işlem</button>
@@ -13,17 +12,7 @@
   </div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      imageData: null
-    };
-  },
-  computed: {},
-  created() {
-    this.imageData = this.$store.getters.sourceImageGetters;
-  }
-};
+export default {};
 </script>
 
 <style scoped>
@@ -39,7 +28,7 @@ export default {
   display: flex;
   justify-content: space-around;
 }
-.jumbotron img {
+.jumbotron canvas {
   border: 3px solid black;
 }
 .head-text {
