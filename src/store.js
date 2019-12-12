@@ -7,7 +7,11 @@ export default new Vuex.Store({
         state: {
                 sourceImage: null,
                 lastImage: null,
-                processingImage: null
+                processingImage: null,
+                imageSrc: {
+                        width: null,
+                        height: null,
+                }
         },
         getters: {
                 sourceImageGetters(state) {
@@ -29,6 +33,10 @@ export default new Vuex.Store({
                 },
                 PROCESSING_IMAGE_SET(state, payload) {
                         state.processingImage = payload;
+                },
+                IMAGE_SRC_SET(state, payload) {
+                        state.imageSrc.height = payload.h;
+                        state.imageSrc.width = payload.w;
                 }
         },
         actions: {
@@ -40,6 +48,9 @@ export default new Vuex.Store({
                 },
                 processingImageSet(context, payload) {
                         context.commit('PROCESSING_IMAGE_SET', payload);
+                },
+                imageSrcSet(context, payload) {
+                        context.commit('IMAGE_SRC_SET', payload);
                 }
         }
 });

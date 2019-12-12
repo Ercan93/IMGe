@@ -31,10 +31,12 @@ export default {
   },
   methods: {
     onChange(image) {
+      var img = new Image();
+      img = image;
       console.log("Resim seçildi");
-      if (image) {
+      if (img) {
         console.log("Resim Yüklendi");
-        this.$store.dispatch("sourceImageSet", image);
+        this.$store.dispatch("sourceImageSet", img);
         setTimeout(() => {
           this.$router.push({ name: "pre-process" });
         }, 1000);
