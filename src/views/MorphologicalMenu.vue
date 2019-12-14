@@ -62,6 +62,10 @@ export default {
       this.provider.context.drawImage(ImageData, 0, 0);
     }, 500);
     //----x-----------------x---------------x------------
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("processingImageSet", this.processingImage);
+    next();
   }
 };
 </script>

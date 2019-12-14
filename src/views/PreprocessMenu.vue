@@ -107,7 +107,6 @@ export default {
         this.$refs["result-img"].src = dataURL;
 
         this.processingImage = this.$refs["result-img"].src;
-        this.$store.dispatch("processingImageSet", this.processingImage);
       }, 1000);
     }
   },

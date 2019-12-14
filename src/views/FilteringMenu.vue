@@ -42,7 +42,6 @@ export default {
     this.image = this.$store.getters.processingImageGetters;
     if (this.image == null) {
       this.image = this.$store.getters.sourceImageGetters;
-      console.log(this.image);
     }
     //--x----------------x------------------x----------------
 
@@ -60,10 +59,13 @@ export default {
     setTimeout(() => {
       var ImageData = new Image();
       ImageData.src = this.image;
-      console.log("created" + this.image);
       this.provider.context.drawImage(ImageData, 0, 0);
     }, 500);
     //----x-----------------x---------------x------------
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("processingImageSet", this.processingImage);
+    next();
   }
 };
 </script>

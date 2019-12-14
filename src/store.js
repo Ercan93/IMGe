@@ -26,6 +26,9 @@ export default new Vuex.Store({
                 },
                 routeNameGetters(state) {
                         return state.routeName;
+                },
+                imageSrcGetters(state) {
+                        return state.imageSrc;
                 }
         },
         mutations: {
@@ -39,8 +42,8 @@ export default new Vuex.Store({
                         state.processingImage = payload;
                 },
                 IMAGE_SRC_SET(state, payload) {
-                        state.imageSrc.height = payload[0];
-                        state.imageSrc.width = payload[1];
+                        state.imageSrc.width = payload[0];
+                        state.imageSrc.height = payload[1];
                 },
                 ROUTE_NAME_SET(state, payload) {
                         state.routeName = payload;
