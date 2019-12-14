@@ -25,6 +25,8 @@
           </li>
         </ul>
       </div>
+      <button class="btn btn-success mr-3 next-buttons">Previous</button>
+      <button class="btn btn-success mr-5 next-buttons">Next</button>
     </nav>
   </div>
 </template>
@@ -35,5 +37,8 @@
   margin-right: auto;
   left: 0;
   right: 0;
+}
+.next-buttons {
+  border: 2px solid black;
 }
 </style>
