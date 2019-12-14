@@ -37,9 +37,6 @@ export default {
       if (img) {
         console.log("Resim Yüklendi");
         this.$store.dispatch("sourceImageSet", img);
-        setTimeout(() => {
-          this.$router.push({ name: "pre-process" });
-        }, 1000);
       } else {
         console.log("Ahbab yanlış yoldasın!!");
       }

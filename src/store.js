@@ -11,7 +11,8 @@ export default new Vuex.Store({
                 imageSrc: {
                         width: null,
                         height: null,
-                }
+                },
+                RouteName: null,
         },
         getters: {
                 sourceImageGetters(state) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
                 },
                 processingImageGetters(state) {
                         return state.processingImage;
+                },
+                routeNameGetters(state) {
+                        return state.RouteName;
                 }
         },
         mutations: {
@@ -37,6 +41,9 @@ export default new Vuex.Store({
                 IMAGE_SRC_SET(state, payload) {
                         state.imageSrc.height = payload[0];
                         state.imageSrc.width = payload[1];
+                },
+                ROUTE_NAME_SET(state, payload) {
+                        state.RouteName = payload;
                 }
         },
         actions: {
@@ -51,6 +58,9 @@ export default new Vuex.Store({
                 },
                 imageSrcSet(context, payload) {
                         context.commit('IMAGE_SRC_SET', payload);
+                },
+                RouteNameSet(context, payload) {
+                        context.commit('ROUTE_NAME_SET', payload);
                 }
         }
 });

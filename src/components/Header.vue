@@ -25,11 +25,32 @@
           </li>
         </ul>
       </div>
-      <button class="btn btn-success mr-3 next-buttons">Previous</button>
-      <button class="btn btn-success mr-5 next-buttons">Next</button>
+      <button
+        v-if="$route.name != 'file-chooser'"
+        class="btn btn-success mr-3 next-buttons"
+        @click="PreviousFunction"
+      >Previous</button>
+      <button class="btn btn-success mr-5 next-buttons" @click="nextFunction">Next</button>
     </nav>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      routeName: "pre-process"
+    };
+  },
+  methods: {
+    nextFunction() {
+      this.$router.push({ name: this.routeName });
+    },
+    PreviousFunction() {
+      this.$router.go(-1);
+    }
+  }
+};
+</script>
 
 <style  scoped>
 .navlist {
