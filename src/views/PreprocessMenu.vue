@@ -14,7 +14,6 @@
         <button class="btn btn-success">Image Crop</button>
       </div>
     </div>
-    <!--  <img width="500px" ref="result-img" :src="processingImage" class="resultImg" alt /> -->
     <div class="result" v-show="resultEnabled">
       <span class="badge badge-success head-text">Result</span>
       <img width="500px" ref="result-img" class="resultImg" alt />
@@ -30,7 +29,6 @@ export default {
       processingImage: null,
       height: null,
       width: null,
-      ctx: null,
       resultEnabled: 0,
       provider: {
         context: null
@@ -45,7 +43,6 @@ export default {
 
     //-- Canvas preliminary operations ------------------------------
     this.provider.context = this.$refs["my-canvas"].getContext("2d");
-    this.ctx = this.provider.context;
     //--x--------------x-----------------x-------------x-------------
   },
 
@@ -70,11 +67,11 @@ export default {
           .putImageData(imageDataCopy, 0, 0);
         this.resultEnabled = 1;
 
+        // Convert to Canvas image data to normal image----
         var dataURL = this.$refs["my-canvas"].toDataURL();
         this.$refs["result-img"].src = dataURL;
-
+        //-----------x---------------x----------------------
         this.processingImage = this.$refs["result-img"].src;
-        this.$store.dispatch("processingImageSet", this.processingImage);
       }, 1000);
     },
     siyah_beyaz_cevirme() {
@@ -140,6 +137,10 @@ export default {
       this.provider.context.drawImage(ImageData, 0, 0);
     }, 1000);
     //----x-----------------x---------------x------------
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("processingImageSet", this.processingImage);
+    next();
   }
 };
 </script>

@@ -13,7 +13,7 @@
         <button class="btn btn-warning text-dark">Color image finding objects</button>
       </div>
     </div>
-    <!--  <img width="500px" ref="result-img" :src="processingImage" class="resultImg" alt /> -->
+
     <div class="result" v-show="resultEnabled">
       <span class="badge badge- head-text text-dark">Result</span>
       <img width="500px" ref="result-img" class="resultImg" alt />
@@ -29,7 +29,6 @@ export default {
       processingImage: null,
       height: null,
       width: null,
-      ctx: null,
       resultEnabled: 0,
       provider: {
         context: null
@@ -38,9 +37,12 @@ export default {
   },
 
   mounted() {
-    //-- Get image in store ----------------------------
-    this.image = this.$store.getters.sourceImageGetters;
-    //--x----------------x------------------x----------
+    //-- Get image in store -------------------------------
+    this.image = this.$store.getters.processingImageGetters;
+    if (this.image == null) {
+      this.image = this.$store.getters.sourceImageGetters;
+    }
+    //--x----------------x------------------x----------------
 
     //-- Canvas preliminary operations ------------------------------
     this.provider.context = this.$refs["my-canvas"].getContext("2d");
@@ -48,25 +50,12 @@ export default {
     //--x--------------x-----------------x-------------x-------------
   },
   created() {
-    setTimeout(() => {
-      //-- Take the height and width of the image  ----------------
-      var imgWidth = document.getElementById("orgImg").width;
-      var imgHeight = document.getElementById("orgImg").height;
-      this.width = imgWidth;
-      this.height = imgHeight;
-      //--x---------------x----------------x--------------------
-
-      //-- Sending the height and width to store ---------------
-      this.$store.dispatch("imageSrcSet", [imgWidth, imgHeight]);
-      //--x-------------------x--------------x-------------------
-    }, 500);
-
     //-- Press image to canvas --------------------------
     setTimeout(() => {
       var ImageData = new Image();
       ImageData.src = this.image;
       this.provider.context.drawImage(ImageData, 0, 0);
-    }, 1000);
+    }, 500);
     //----x-----------------x---------------x------------
   }
 };

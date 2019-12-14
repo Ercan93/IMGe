@@ -31,6 +31,7 @@
         @click="PreviousFunction"
       >Previous</button>
       <button
+        v-if="$route.name != 'segmentation-menu'"
         class="btn btn-warning border-dark font-weight-bold text-dark mr-5"
         @click="nextFunction"
       >Next</button>
