@@ -9,9 +9,9 @@
       </div>
       <div class="process-buttons">
         <button class="btn btn-success" @click="grayScale">Gray Scale</button>
-        <button class="btn btn-success" @click="siyah_beyaz_cevirme">Black-white</button>
-        <button class="btn btn-success">Birinci işlem</button>
-        <button class="btn btn-success">Birinci işlem</button>
+        <button class="btn btn-success">Image zoom</button>
+        <button class="btn btn-success">Image Resize</button>
+        <button class="btn btn-success">Image Crop</button>
       </div>
     </div>
     <!--  <img width="500px" ref="result-img" :src="processingImage" class="resultImg" alt /> -->
@@ -162,7 +162,7 @@ export default {
   justify-content: center;
   width: 200px;
   height: 300px;
-  margin-top: -490px;
+  margin-top: -530px;
   margin-right: 365px;
 }
 

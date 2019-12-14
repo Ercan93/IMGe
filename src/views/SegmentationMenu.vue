@@ -7,10 +7,10 @@
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-warning text-dark">Birinci işlem</button>
-        <button class="btn btn-warning text-dark">Birinci işlem</button>
-        <button class="btn btn-warning text-dark">Birinci işlem</button>
-        <button class="btn btn-warning text-dark">Birinci işlem</button>
+        <button class="btn btn-warning text-dark">Threshold</button>
+        <button class="btn btn-warning text-dark">BW image finding objects (neighborhood)</button>
+        <button class="btn btn-warning text-dark">Gray image object finding and show</button>
+        <button class="btn btn-warning text-dark">Color image finding objects</button>
       </div>
     </div>
     <!--  <img width="500px" ref="result-img" :src="processingImage" class="resultImg" alt /> -->

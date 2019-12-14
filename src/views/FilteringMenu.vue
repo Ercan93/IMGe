@@ -7,10 +7,11 @@
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-danger">Birinci işlem</button>
-        <button class="btn btn-danger">Birinci işlem</button>
-        <button class="btn btn-danger">Birinci işlem</button>
-        <button class="btn btn-danger">Birinci işlem</button>
+        <button class="btn btn-danger">Blur filter</button>
+        <button class="btn btn-danger">Sharpening filter</button>
+        <button class="btn btn-danger">Median filter</button>
+        <button class="btn btn-danger">Laplace filter</button>
+        <button class="btn btn-danger">Sobel filter</button>
       </div>
     </div>
     <!--  <img width="500px" ref="result-img" :src="processingImage" class="resultImg" alt /> -->

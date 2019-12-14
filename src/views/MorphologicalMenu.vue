@@ -7,10 +7,10 @@
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-secondary">Birinci işlem</button>
-        <button class="btn btn-secondary">Birinci işlem</button>
-        <button class="btn btn-secondary">Birinci işlem</button>
-        <button class="btn btn-secondary">Birinci işlem</button>
+        <button class="btn btn-secondary">Dilation</button>
+        <button class="btn btn-secondary">Erosion</button>
+        <button class="btn btn-secondary">Opening</button>
+        <button class="btn btn-secondary">Closing</button>
       </div>
     </div>
     <!--  <img width="500px" ref="result-img" :src="processingImage" class="resultImg" alt /> -->
