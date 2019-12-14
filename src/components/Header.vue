@@ -27,10 +27,13 @@
       </div>
       <button
         v-if="$route.name != 'file-chooser'"
-        class="btn btn-success mr-3 next-buttons"
+        class="btn btn-warning border-dark text-dark mr-3"
         @click="PreviousFunction"
       >Previous</button>
-      <button class="btn btn-success mr-5 next-buttons" @click="nextFunction">Next</button>
+      <button
+        class="btn btn-warning border-dark font-weight-bold text-dark mr-5"
+        @click="nextFunction"
+      >Next</button>
     </nav>
   </div>
 </template>
@@ -38,11 +41,13 @@
 export default {
   data() {
     return {
-      routeName: "pre-process"
+      routeName: null
     };
   },
+  created() {},
   methods: {
     nextFunction() {
+      this.routeName = this.$store.getters.routeNameGetters;
       this.$router.push({ name: this.routeName });
     },
     PreviousFunction() {
@@ -58,8 +63,5 @@ export default {
   margin-right: auto;
   left: 0;
   right: 0;
-}
-.next-buttons {
-  border: 2px solid black;
 }
 </style>

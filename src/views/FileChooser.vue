@@ -41,6 +41,10 @@ export default {
         console.log("Ahbab yanlış yoldasın!!");
       }
     }
+  },
+  created() {
+    // named route path for next button
+    this.$store.dispatch("routeNameSet", "pre-process-menu");
   }
 };
 </script>

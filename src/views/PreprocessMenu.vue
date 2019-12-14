@@ -1,21 +1,22 @@
 <template>
   <div class="jumb">
-    <span class="badge badge-danger head-text">Filtering Menu</span>
+    <span class="badge badge-success head-text">PreProcess Menu</span>
+    <img :src="image" id="orgImg" v-show="false" />
     <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
     <div class="jumbotron bg-info">
       <div class="canvasPanel">
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-danger">Birinci işlem</button>
-        <button class="btn btn-danger">Birinci işlem</button>
-        <button class="btn btn-danger">Birinci işlem</button>
-        <button class="btn btn-danger">Birinci işlem</button>
+        <button class="btn btn-success" @click="grayScale">Gray Scale</button>
+        <button class="btn btn-success" @click="siyah_beyaz_cevirme">Black-white</button>
+        <button class="btn btn-success">Birinci işlem</button>
+        <button class="btn btn-success">Birinci işlem</button>
       </div>
     </div>
     <!--  <img width="500px" ref="result-img" :src="processingImage" class="resultImg" alt /> -->
     <div class="result" v-show="resultEnabled">
-      <span class="badge badge-danger head-text">Result</span>
+      <span class="badge badge-success head-text">Result</span>
       <img width="500px" ref="result-img" class="resultImg" alt />
     </div>
   </div>
@@ -47,9 +48,76 @@ export default {
     this.ctx = this.provider.context;
     //--x--------------x-----------------x-------------x-------------
   },
+
+  methods: {
+    grayScale() {
+      var imageDataCopy = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      for (var i = 0; i < imageDataCopy.data.length; i += 4) {
+        var avg =
+          (imageDataCopy.data[i] +
+            imageDataCopy.data[i + 1] +
+            imageDataCopy.data[i + 2]) /
+          3;
+        imageDataCopy.data[i] = avg; // red
+        imageDataCopy.data[i + 1] = avg; // green
+        imageDataCopy.data[i + 2] = avg; // blue
+      }
+      setTimeout(() => {
+        this.$refs["my-canvas"]
+          .getContext("2d")
+          .putImageData(imageDataCopy, 0, 0);
+        this.resultEnabled = 1;
+
+        var dataURL = this.$refs["my-canvas"].toDataURL();
+        this.$refs["result-img"].src = dataURL;
+
+        this.processingImage = this.$refs["result-img"].src;
+        this.$store.dispatch("processingImageSet", this.processingImage);
+      }, 1000);
+    },
+    siyah_beyaz_cevirme() {
+      var imageDataCopy = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      for (var x = 0; x < this.width; x++) {
+        for (var y = 0; y < this.height; y++) {
+          var loc = (y * this.width + x) * 4;
+          var avg =
+            (imageDataCopy.data[loc] +
+              imageDataCopy.data[loc + 1] +
+              imageDataCopy.data[loc + 2]) /
+            3;
+          if (avg > 138) {
+            imageDataCopy.data[loc] = 255;
+            imageDataCopy.data[loc + 1] = 255;
+            imageDataCopy.data[loc + 2] = 255; // White
+          } else {
+            imageDataCopy.data[loc] = 0;
+            imageDataCopy.data[loc + 1] = 0;
+            imageDataCopy.data[loc + 2] = 0; // Black
+          }
+        }
+      }
+      setTimeout(() => {
+        this.$refs["my-canvas"]
+          .getContext("2d")
+          .putImageData(imageDataCopy, 0, 0);
+        this.resultEnabled = 1;
+
+        var dataURL = this.$refs["my-canvas"].toDataURL();
+        this.$refs["result-img"].src = dataURL;
+
+        this.processingImage = this.$refs["result-img"].src;
+        this.$store.dispatch("processingImageSet", this.processingImage);
+      }, 1000);
+    }
+  },
+
   created() {
     //-- named route path for next button ----------------
-    this.$store.dispatch("routeNameSet", "morphological-menu");
+    this.$store.dispatch("routeNameSet", "filtering-menu");
     //-------------x------------------x-------------------
 
     setTimeout(() => {

@@ -1,21 +1,21 @@
 <template>
   <div class="jumb">
-    <span class="badge badge-danger head-text">Filtering Menu</span>
+    <span class="badge badge-secondary head-text">Morphological Menu</span>
     <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
     <div class="jumbotron bg-info">
       <div class="canvasPanel">
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-danger">Birinci işlem</button>
-        <button class="btn btn-danger">Birinci işlem</button>
-        <button class="btn btn-danger">Birinci işlem</button>
-        <button class="btn btn-danger">Birinci işlem</button>
+        <button class="btn btn-secondary">Birinci işlem</button>
+        <button class="btn btn-secondary">Birinci işlem</button>
+        <button class="btn btn-secondary">Birinci işlem</button>
+        <button class="btn btn-secondary">Birinci işlem</button>
       </div>
     </div>
     <!--  <img width="500px" ref="result-img" :src="processingImage" class="resultImg" alt /> -->
     <div class="result" v-show="resultEnabled">
-      <span class="badge badge-danger head-text">Result</span>
+      <span class="badge badge-secondary head-text">Result</span>
       <img width="500px" ref="result-img" class="resultImg" alt />
     </div>
   </div>
@@ -49,9 +49,8 @@ export default {
   },
   created() {
     //-- named route path for next button ----------------
-    this.$store.dispatch("routeNameSet", "morphological-menu");
+    this.$store.dispatch("routeNameSet", "segmentation-menu");
     //-------------x------------------x-------------------
-
     setTimeout(() => {
       //-- Take the height and width of the image  ----------------
       var imgWidth = document.getElementById("orgImg").width;
