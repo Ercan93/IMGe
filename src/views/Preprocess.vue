@@ -2,21 +2,22 @@
   <div class="jumb">
     <span class="badge badge-success head-text">PreProcess Menu</span>
     <img :src="image" id="orgImg" v-show="false" />
-    <canvas v-show="false" ref="my-canvas"></canvas>
+    <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
     <div class="jumbotron bg-info">
       <div class="canvasPanel">
-        <img ref="org-img" class="imgClass" :src="image" alt />
+        <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-success head-text">Gray Scale</button>
-        <button class="btn btn-success head-text">drawRect</button>
-        <button class="btn btn-success head-text">Birinci işlem</button>
-        <button class="btn btn-success head-text">Birinci işlem</button>
+        <button class="btn btn-success" @click="grayScale">Gray Scale</button>
+        <button class="btn btn-success" @click="siyah_beyaz_cevirme">Black-white</button>
+        <button class="btn btn-success">Birinci işlem</button>
+        <button class="btn btn-success">Birinci işlem</button>
       </div>
     </div>
-    <div class="result">
+    <!--  <img width="500px" ref="result-img" :src="processingImage" class="resultImg" alt /> -->
+    <div class="result" v-show="resultEnabled">
       <span class="badge badge-success head-text">Result</span>
-      <img ref="result-img" class="imgClass" :src="image" alt />
+      <img width="500px" ref="result-img" class="resultImg" alt />
     </div>
   </div>
 </template>
@@ -25,11 +26,12 @@ export default {
   data() {
     return {
       image: null,
-      imgH: null,
-      imgW: null,
-      resultImage: null,
+      imageData: null,
+      processingImage: null,
+      height: null,
+      width: null,
       ctx: null,
-      islem: 0,
+      resultEnabled: 0,
       provider: {
         context: null
       }
@@ -37,31 +39,102 @@ export default {
   },
 
   mounted() {
-    this.provider.context = this.$refs["my-canvas"].getContext("2d");
+    //-- Get image in store ----------------------------
     this.image = this.$store.getters.sourceImageGetters;
-    this.ctx = this.provider.context;
+    //--x----------------x------------------x----------
 
-    //this.ctx.putImageData(this.image, 0, 0);
-    console.log("mounted");
+    //-- Canvas preliminary operations ------------------------------
+    this.provider.context = this.$refs["my-canvas"].getContext("2d");
+    this.ctx = this.provider.context;
+    //--x--------------x-----------------x-------------x-------------
   },
-  methods: {},
+
+  methods: {
+    grayScale() {
+      var imageDataCopy = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      for (var i = 0; i < imageDataCopy.data.length; i += 4) {
+        var avg =
+          (imageDataCopy.data[i] +
+            imageDataCopy.data[i + 1] +
+            imageDataCopy.data[i + 2]) /
+          3;
+        imageDataCopy.data[i] = avg; // red
+        imageDataCopy.data[i + 1] = avg; // green
+        imageDataCopy.data[i + 2] = avg; // blue
+      }
+      setTimeout(() => {
+        this.$refs["my-canvas"]
+          .getContext("2d")
+          .putImageData(imageDataCopy, 0, 0);
+        this.resultEnabled = 1;
+
+        var dataURL = this.$refs["my-canvas"].toDataURL();
+        this.$refs["result-img"].src = dataURL;
+
+        this.processingImage = this.$refs["result-img"].src;
+        this.$store.dispatch("processingImageSet", this.processingImage);
+      }, 1000);
+    },
+    siyah_beyaz_cevirme() {
+      var imageDataCopy = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      for (var x = 0; x < this.width; x++) {
+        for (var y = 0; y < this.height; y++) {
+          var loc = (y * this.width + x) * 4;
+          var avg =
+            (imageDataCopy.data[loc] +
+              imageDataCopy.data[loc + 1] +
+              imageDataCopy.data[loc + 2]) /
+            3;
+          if (avg > 138) {
+            imageDataCopy.data[loc] = 255;
+            imageDataCopy.data[loc + 1] = 255;
+            imageDataCopy.data[loc + 2] = 255; // White
+          } else {
+            imageDataCopy.data[loc] = 0;
+            imageDataCopy.data[loc + 1] = 0;
+            imageDataCopy.data[loc + 2] = 0; // Black
+          }
+        }
+      }
+      setTimeout(() => {
+        this.$refs["my-canvas"]
+          .getContext("2d")
+          .putImageData(imageDataCopy, 0, 0);
+        this.resultEnabled = 1;
+
+        var dataURL = this.$refs["my-canvas"].toDataURL();
+        this.$refs["result-img"].src = dataURL;
+
+        this.processingImage = this.$refs["result-img"].src;
+        this.$store.dispatch("processingImageSet", this.processingImage);
+      }, 1000);
+    }
+  },
+
   created() {
     setTimeout(() => {
-      var width = document.getElementById("orgImg").width;
-      var height = document.getElementById("orgImg").height;
+      //-- Take the height and width of the image  ----------------
+      var imgWidth = document.getElementById("orgImg").width;
+      var imgHeight = document.getElementById("orgImg").height;
+      this.width = imgWidth;
+      this.height = imgHeight;
+      //--x---------------x----------------x--------------------
+      //-- Sending the height and width to store ---------------
+      this.$store.dispatch("imageSrcSet", [imgWidth, imgHeight]);
+      //--x-------------------x--------------x-------------------
+    }, 500);
 
-      this.width = width;
-      this.height = height;
-      console.log(width + "x" + height);
-      this.$store.dispatch("imageSrcSet", { w: width, h: height });
-
-      var img1 = new Image();
-      img1.src = this.image;
-      var ImageData = img1;
-
-      // console.log(this.provider.context);
-      //this.ctx.drawImage(ImageData, 0, 0);
+    //-- Press image to canvas --------------------------
+    setTimeout(() => {
+      var ImageData = new Image();
+      ImageData.src = this.image;
+      this.provider.context.drawImage(ImageData, 0, 0);
     }, 1000);
+    //----x-----------------x---------------x------------
   }
 };
 </script>
@@ -84,13 +157,14 @@ export default {
   justify-content: center;
   width: 200px;
   height: 300px;
-  margin-top: -480px;
-  margin-right: 280px;
+  margin-top: -490px;
+  margin-right: 365px;
 }
-.imgClass {
-  width: 400px;
-  height: 300px;
+
+.resultImg {
   margin-top: 10px;
+  border: 3px solid black;
+  border-radius: 5px;
 }
 .head-text {
   font-size: 25px;
@@ -101,6 +175,7 @@ span.head-text {
 .process-buttons {
   display: flex;
   flex-direction: column;
+  margin-top: 50px;
 }
 .process-buttons button {
   margin-bottom: 15px;

@@ -35,8 +35,8 @@ export default new Vuex.Store({
                         state.processingImage = payload;
                 },
                 IMAGE_SRC_SET(state, payload) {
-                        state.imageSrc.height = payload.h;
-                        state.imageSrc.width = payload.w;
+                        state.imageSrc.height = payload[0];
+                        state.imageSrc.width = payload[1];
                 }
         },
         actions: {
