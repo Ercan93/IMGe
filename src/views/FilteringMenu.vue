@@ -10,7 +10,7 @@
         <button class="btn btn-danger" @click="blurFilter">Blur filter</button>
         <button class="btn btn-danger" @click="sharpeningFilter">Sharpening filter</button>
         <button class="btn btn-danger" @click="medianFilter">Median filter</button>
-        <button class="btn btn-danger">Laplace filter</button>
+        <button class="btn btn-danger disabled">Laplace filter</button>
         <button class="btn btn-danger" @click="sobelFilter">Sobel filter</button>
       </div>
     </div>
@@ -211,7 +211,6 @@ export default {
               this.imageDataProcess.data[loc2] = Red;
               this.imageDataProcess.data[loc2 + 1] = Green;
               this.imageDataProcess.data[loc2 + 2] = Blue;
-
               k++;
             }
           }
@@ -298,7 +297,7 @@ span.head-text {
 .process-buttons {
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 .process-buttons button {
   margin-bottom: 15px;

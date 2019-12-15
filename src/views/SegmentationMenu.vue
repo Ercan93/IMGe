@@ -27,6 +27,7 @@ export default {
       image: null,
       imageData: null,
       processingImage: null,
+      imageDataProcess: null,
       myCanvas: null,
       width: null,
       height: null,
@@ -36,7 +37,28 @@ export default {
       }
     };
   },
-
+  methods: {
+    canvasGetImgData() {
+      this.imageData = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      this.imageDataProcess = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+    },
+    canvasSetImgData() {
+      this.$refs["my-canvas"]
+        .getContext("2d")
+        .putImageData(this.imageDataProcess, 0, 0);
+      this.resultEnabled = 1;
+      this.imageData = this.imageDataProcess;
+      // Convert to Canvas image data to normal image----
+      var dataURL = this.$refs["my-canvas"].toDataURL();
+      this.$refs["result-img"].src = dataURL;
+      //-----------x---------------x----------------------
+      this.processingImage = this.$refs["result-img"].src;
+    }
+  },
   mounted() {
     //-- Get image in store -------------------------------
     this.image = this.$store.getters.processingImageGetters;
