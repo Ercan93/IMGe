@@ -27,6 +27,7 @@ export default {
     return {
       image: null,
       imageData: null,
+      imageDataProcess: null,
       processingImage: null,
       width: null,
       height: null,
@@ -37,16 +38,16 @@ export default {
     };
   },
   methods: {
+    canvasGetImgData() {
+      this.imageData = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      this.imageDataProcess = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+    },
     blurFilter() {
-      var imageData = this.$refs["my-canvas"]
-        .getContext("2d")
-        .getImageData(0, 0, this.width, this.height);
-      var imageDataProcess = this.$refs["my-canvas"]
-        .getContext("2d")
-        .getImageData(0, 0, this.width, this.height);
-      var data = imageData.data;
-      var dataProcess = imageDataProcess.data;
-
+      this.canvasGetImgData();
       var AvgR = 0,
         AvgG = 0,
         AvgB = 0;
@@ -60,23 +61,23 @@ export default {
           for (var i = -1; i < 2; i++) {
             for (var j = -1; j < 2; j++) {
               var loc = ((y + j) * this.width + (x + i)) * 4;
-              sumR = sumR + data[loc];
-              sumG = sumG + data[loc + 1];
-              sumB = sumB + data[loc + 2];
+              sumR = sumR + this.imageData.data[loc];
+              sumG = sumG + this.imageData.data[loc + 1];
+              sumB = sumB + this.imageData.data[loc + 2];
             }
           }
           AvgR = sumR / 9;
           AvgG = sumG / 9;
           AvgB = sumB / 9;
           var last_loc = (y * this.width + x) * 4;
-          dataProcess[last_loc] = AvgR;
-          dataProcess[last_loc + 1] = AvgG;
-          dataProcess[last_loc + 2] = AvgB;
+          this.imageDataProcess.data[last_loc] = AvgR;
+          this.imageDataProcess.data[last_loc + 1] = AvgG;
+          this.imageDataProcess.data[last_loc + 2] = AvgB;
         }
         setTimeout(() => {
           this.$refs["my-canvas"]
             .getContext("2d")
-            .putImageData(imageDataProcess, 0, 0);
+            .putImageData(this.imageDataProcess, 0, 0);
           this.resultEnabled = 1;
 
           // Convert to Canvas image data to normal image----
@@ -88,29 +89,22 @@ export default {
       }
     },
     sobelFilter() {
-      var imageData = this.$refs["my-canvas"]
-        .getContext("2d")
-        .getImageData(0, 0, this.width, this.height);
-      var imageDataProcess = this.$refs["my-canvas"]
-        .getContext("2d")
-        .getImageData(0, 0, this.width, this.height);
-      var data = imageData.data;
-      var dataProcess = imageDataProcess.data;
-
+      this.canvasGetImgData();
       for (var x = 1; x < this.width; x++) {
         for (var y = 0; y < this.height; y++) {
           var loc = (y * this.width + x) * 4;
           var leftloc = (y * this.width + (x - 1)) * 4;
 
           for (var i = 0; i < 3; i++) {
-            dataProcess[loc + i] = data[loc] - data[leftloc];
+            this.imageDataProcess.data[loc + i] =
+              this.imageData.data[loc] - this.imageData.data[leftloc];
           }
         }
       }
       setTimeout(() => {
         this.$refs["my-canvas"]
           .getContext("2d")
-          .putImageData(imageDataProcess, 0, 0);
+          .putImageData(this.imageDataProcess, 0, 0);
         this.resultEnabled = 1;
 
         // Convert to Canvas image data to normal image----
