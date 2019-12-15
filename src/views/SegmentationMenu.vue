@@ -7,7 +7,7 @@
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-warning text-dark">Threshold</button>
+        <button class="btn btn-warning text-dark" @click="thresold">Threshold</button>
         <button class="btn btn-warning text-dark">BW image finding objects (neighborhood)</button>
         <button class="btn btn-warning text-dark">Gray image object finding and show</button>
         <button class="btn btn-warning text-dark">Color image finding objects</button>
@@ -29,6 +29,7 @@ export default {
       processingImage: null,
       imageDataProcess: null,
       myCanvas: null,
+      thresoldValue: null,
       width: null,
       height: null,
       resultEnabled: 0,
@@ -57,6 +58,20 @@ export default {
       this.$refs["result-img"].src = dataURL;
       //-----------x---------------x----------------------
       this.processingImage = this.$refs["result-img"].src;
+    },
+    thresold() {
+      var colorSum = 0;
+      for (var i = 0; i < this.imageData.data.length; i += 4) {
+        var avg =
+          (this.imageData.data[i] +
+            this.imageData.data[i + 1] +
+            this.imageData.data[i + 2]) /
+          3;
+        colorSum += avg;
+      }
+      brightness = Math.floor(colorSum / (this.width * this.height));
+      console.log(brightness);
+      this.thresoldValue = brightness;
     }
   },
   mounted() {
