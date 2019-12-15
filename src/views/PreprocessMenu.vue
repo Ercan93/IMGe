@@ -2,7 +2,7 @@
   <div class="jumb">
     <span class="badge badge-success head-text">PreProcess Menu</span>
     <img :src="image" id="orgImg" v-show="false" />
-    <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
+    <canvas v-show="false" width="300px" height="300px" ref="my-canvas"></canvas>
     <div class="jumbotron bg-info">
       <div class="canvasPanel">
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
@@ -27,6 +27,7 @@ export default {
       image: null,
       imageData: null,
       processingImage: null,
+      myCanvas: null,
       height: null,
       width: null,
       resultEnabled: 0,
@@ -40,7 +41,6 @@ export default {
     //-- Get image in store ----------------------------
     this.image = this.$store.getters.sourceImageGetters;
     //--x----------------x------------------x----------
-
     //-- Canvas preliminary operations ------------------------------
     this.provider.context = this.$refs["my-canvas"].getContext("2d");
     //--x--------------x-----------------x-------------x-------------
@@ -108,6 +108,20 @@ export default {
 
         this.processingImage = this.$refs["result-img"].src;
       }, 1000);
+    },
+    getCursorPosition(canvas, event, control) {
+      var rect = canvas.getBoundingClientRect();
+      var x = event.clientX - rect.left;
+      var y = event.clientY - rect.top;
+      if (control == "md") {
+        leftData[0] = x;
+        leftData[1] = y;
+        console.log("mouse down " + leftData);
+      } else {
+        rightData[0] = x;
+        rightData[1] = y;
+        console.log("mouse up " + rightData);
+      }
     }
   },
 

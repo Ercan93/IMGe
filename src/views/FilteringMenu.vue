@@ -11,7 +11,7 @@
         <button class="btn btn-danger">Sharpening filter</button>
         <button class="btn btn-danger">Median filter</button>
         <button class="btn btn-danger">Laplace filter</button>
-        <button class="btn btn-danger">Sobel filter</button>
+        <button class="btn btn-danger" @click="sobelFilter">Sobel filter</button>
       </div>
     </div>
 
@@ -86,6 +86,39 @@ export default {
           this.processingImage = this.$refs["result-img"].src;
         }, 1000);
       }
+    },
+    sobelFilter() {
+      var imageData = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      var imageDataProcess = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      var data = imageData.data;
+      var dataProcess = imageDataProcess.data;
+
+      for (var x = 1; x < this.width; x++) {
+        for (var y = 0; y < this.height; y++) {
+          var loc = (y * this.width + x) * 4;
+          var leftloc = (y * this.width + (x - 1)) * 4;
+
+          for (var i = 0; i < 3; i++) {
+            dataProcess[loc + i] = data[loc] - data[leftloc];
+          }
+        }
+      }
+      setTimeout(() => {
+        this.$refs["my-canvas"]
+          .getContext("2d")
+          .putImageData(imageDataProcess, 0, 0);
+        this.resultEnabled = 1;
+
+        // Convert to Canvas image data to normal image----
+        var dataURL = this.$refs["my-canvas"].toDataURL();
+        this.$refs["result-img"].src = dataURL;
+        //-----------x---------------x----------------------
+        this.processingImage = this.$refs["result-img"].src;
+      }, 1000);
     }
   },
   mounted() {
