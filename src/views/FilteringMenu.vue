@@ -8,7 +8,7 @@
       </div>
       <div class="process-buttons">
         <button class="btn btn-danger" @click="blurFilter">Blur filter</button>
-        <button class="btn btn-danger">Sharpening filter</button>
+        <button class="btn btn-danger" @click="sharpeningFilter">Sharpening filter</button>
         <button class="btn btn-danger" @click="medianFilter">Median filter</button>
         <button class="btn btn-danger">Laplace filter</button>
         <button class="btn btn-danger" @click="sobelFilter">Sobel filter</button>
@@ -157,6 +157,64 @@ export default {
           this.imageData.data[loc2] = arr_r[4];
           this.imageData.data[loc2 + 1] = arr_g[4];
           this.imageData.data[loc2 + 2] = arr_b[4];
+        }
+      }
+      setTimeout(() => {
+        this.canvasSetImgData();
+      }, 500);
+    },
+    sharpeningFilter() {
+      this.canvasGetImgData();
+      var matris = [0, -2, 0, -2, 11, -2, 0, -2, 0];
+      var MatrisToplami = 0 + -2 + 0 + -2 + 11 + -2 + 0 + -2 + 0;
+
+      for (var x = 1; x < this.width - 1; x++) {
+        for (var y = 1; y < this.height - 1; y++) {
+          var toplamR = 0;
+          var toplamG = 0;
+          var toplamB = 0;
+          var Red = 0,
+            Green = 0,
+            Blue = 0;
+          var k = 0;
+          for (var i = -1; i < 2; i++) {
+            for (var j = -1; j < 2; j++) {
+              var loc = ((y + j) * this.width + (x + i)) * 4;
+              toplamR =
+                toplamR + this.imageData.data[loc] * parseInt(matris[k]);
+              toplamG =
+                toplamG + this.imageData.data[loc + 1] * parseInt(matris[k]);
+              toplamB =
+                toplamB + this.imageData.data[loc + 2] * parseInt(matris[k]);
+              Red = toplamR / MatrisToplami;
+              Green = toplamG / MatrisToplami;
+              Blue = toplamB / MatrisToplami;
+              if (Red > 255) {
+                Red = 255;
+              }
+              if (Green > 255) {
+                Green = 255;
+              }
+              if (Blue > 255) {
+                Blue = 255;
+              }
+              if (Red < 0) {
+                Red = 0;
+              }
+              if (Green < 0) {
+                Green = 0;
+              }
+              if (Blue < 0) {
+                Blue = 0;
+              }
+              var loc2 = (y * this.width + x) * 4;
+              this.imageDataProcess.data[loc2] = Red;
+              this.imageDataProcess.data[loc2 + 1] = Green;
+              this.imageDataProcess.data[loc2 + 2] = Blue;
+
+              k++;
+            }
+          }
         }
       }
       setTimeout(() => {
