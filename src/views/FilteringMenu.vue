@@ -46,6 +46,18 @@ export default {
         .getContext("2d")
         .getImageData(0, 0, this.width, this.height);
     },
+    canvasSetImgData() {
+      this.$refs["my-canvas"]
+        .getContext("2d")
+        .putImageData(this.imageDataProcess, 0, 0);
+      this.resultEnabled = 1;
+
+      // Convert to Canvas image data to normal image----
+      var dataURL = this.$refs["my-canvas"].toDataURL();
+      this.$refs["result-img"].src = dataURL;
+      //-----------x---------------x----------------------
+      this.processingImage = this.$refs["result-img"].src;
+    },
     blurFilter() {
       this.canvasGetImgData();
       var AvgR = 0,
@@ -75,17 +87,8 @@ export default {
           this.imageDataProcess.data[last_loc + 2] = AvgB;
         }
         setTimeout(() => {
-          this.$refs["my-canvas"]
-            .getContext("2d")
-            .putImageData(this.imageDataProcess, 0, 0);
-          this.resultEnabled = 1;
-
-          // Convert to Canvas image data to normal image----
-          var dataURL = this.$refs["my-canvas"].toDataURL();
-          this.$refs["result-img"].src = dataURL;
-          //-----------x---------------x----------------------
-          this.processingImage = this.$refs["result-img"].src;
-        }, 1000);
+          this.canvasSetImgData();
+        }, 500);
       }
     },
     sobelFilter() {
@@ -102,17 +105,8 @@ export default {
         }
       }
       setTimeout(() => {
-        this.$refs["my-canvas"]
-          .getContext("2d")
-          .putImageData(this.imageDataProcess, 0, 0);
-        this.resultEnabled = 1;
-
-        // Convert to Canvas image data to normal image----
-        var dataURL = this.$refs["my-canvas"].toDataURL();
-        this.$refs["result-img"].src = dataURL;
-        //-----------x---------------x----------------------
-        this.processingImage = this.$refs["result-img"].src;
-      }, 1000);
+        this.canvasSetImgData();
+      }, 500);
     }
   },
   mounted() {
