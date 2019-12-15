@@ -9,7 +9,7 @@
       <div class="process-buttons">
         <button class="btn btn-danger" @click="blurFilter">Blur filter</button>
         <button class="btn btn-danger">Sharpening filter</button>
-        <button class="btn btn-danger">Median filter</button>
+        <button class="btn btn-danger" @click="medianFilter">Median filter</button>
         <button class="btn btn-danger">Laplace filter</button>
         <button class="btn btn-danger" @click="sobelFilter">Sobel filter</button>
       </div>
@@ -102,6 +102,61 @@ export default {
             this.imageDataProcess.data[loc + i] =
               this.imageData.data[loc] - this.imageData.data[leftloc];
           }
+        }
+      }
+      setTimeout(() => {
+        this.canvasSetImgData();
+      }, 500);
+    },
+    medianFilter() {
+      this.canvasGetImgData();
+      var arr_r = new Array(9).fill(0);
+      var arr_g = new Array(9).fill(0);
+      var arr_b = new Array(9).fill(0);
+      var arr_gri = new Array(9).fill(0);
+
+      for (var x = 1; x < this.width - 1; x++) {
+        for (var y = 1; y < this.height - 1; y++) {
+          var k = 0;
+          for (var i = -1; i < 2; i++) {
+            for (var j = -1; j < 2; j++) {
+              var loc = ((y + j) * this.width + (x + i)) * 4;
+              arr_r[k] = this.imageData.data[loc];
+              arr_g[k] = this.imageData.data[loc + 1];
+              arr_b[k] = this.imageData.data[loc + 2];
+
+              arr_gri[k] = parseInt(
+                arr_r[k] * 0.299 + arr_g[k] * 0.587 + arr_b[k] * 0.114
+              );
+              k++;
+            }
+          }
+
+          for (var i = 0; i < 9; i++) {
+            for (var j = i + 1; j < 9; j++) {
+              if (arr_gri[j] < arr_gri[i]) {
+                var temp1 = arr_gri[i];
+                arr_gri[i] = arr_gri[j];
+                arr_gri[j] = temp1;
+
+                var temp2 = arr_b[i];
+                arr_b[i] = arr_b[j];
+                arr_b[j] = temp2;
+
+                var temp3 = arr_r[i];
+                arr_r[i] = arr_r[j];
+                arr_r[j] = temp3;
+
+                var temp4 = arr_g[i];
+                arr_g[i] = arr_g[j];
+                arr_g[j] = temp4;
+              }
+            }
+          }
+          var loc2 = (y * this.width + x) * 4;
+          this.imageData.data[loc2] = arr_r[4];
+          this.imageData.data[loc2 + 1] = arr_g[4];
+          this.imageData.data[loc2 + 2] = arr_b[4];
         }
       }
       setTimeout(() => {
