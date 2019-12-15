@@ -7,7 +7,7 @@
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-danger">Blur filter</button>
+        <button class="btn btn-danger" @click="blurFilter">Blur filter</button>
         <button class="btn btn-danger">Sharpening filter</button>
         <button class="btn btn-danger">Median filter</button>
         <button class="btn btn-danger">Laplace filter</button>
@@ -28,14 +28,66 @@ export default {
       image: null,
       imageData: null,
       processingImage: null,
-      imageSrc: null,
+      width: null,
+      height: null,
       resultEnabled: 0,
       provider: {
         context: null
       }
     };
   },
+  methods: {
+    blurFilter() {
+      var imageData = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      var imageDataProcess = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      var data = imageData.data;
+      var dataProcess = imageDataProcess.data;
 
+      var AvgR = 0,
+        AvgG = 0,
+        AvgB = 0;
+      for (var x = 1; x < this.width - 1; x++) {
+        for (var y = 1; y < this.height - 1; y++) {
+          var sumR = 0;
+          var sumG = 0;
+          var sumB = 0;
+
+          var k = 0;
+          for (var i = -1; i < 2; i++) {
+            for (var j = -1; j < 2; j++) {
+              var loc = ((y + j) * this.width + (x + i)) * 4;
+              sumR = sumR + data[loc];
+              sumG = sumG + data[loc + 1];
+              sumB = sumB + data[loc + 2];
+            }
+          }
+          AvgR = sumR / 9;
+          AvgG = sumG / 9;
+          AvgB = sumB / 9;
+          var last_loc = (y * this.width + x) * 4;
+          dataProcess[last_loc] = AvgR;
+          dataProcess[last_loc + 1] = AvgG;
+          dataProcess[last_loc + 2] = AvgB;
+        }
+        setTimeout(() => {
+          this.$refs["my-canvas"]
+            .getContext("2d")
+            .putImageData(imageDataProcess, 0, 0);
+          this.resultEnabled = 1;
+
+          // Convert to Canvas image data to normal image----
+          var dataURL = this.$refs["my-canvas"].toDataURL();
+          this.$refs["result-img"].src = dataURL;
+          //-----------x---------------x----------------------
+          this.processingImage = this.$refs["result-img"].src;
+        }, 1000);
+      }
+    }
+  },
   mounted() {
     //-- Get image in store -------------------------------
     this.image = this.$store.getters.processingImageGetters;
@@ -45,7 +97,10 @@ export default {
     //--x----------------x------------------x----------------
 
     //-- Get image width and height data in store --------
-    this.imageSrc = this.$store.getters.imageSrcGetters;
+    var imgData = this.$store.getters.imageSrcGetters;
+    this.height = imgData.height;
+    this.width = imgData.width;
+    console.log(imgData.height);
     //----x--------------x--------------x----------------
 
     //-- Canvas preliminary operations ------------------------------

@@ -27,7 +27,8 @@ export default {
       image: null,
       imageData: null,
       processingImage: null,
-      imageSrc: null,
+      width: null,
+      height: null,
       resultEnabled: 0,
       provider: {
         context: null
@@ -43,9 +44,15 @@ export default {
     }
     //--x----------------x------------------x----------------
 
+    //-- Get image width and height data in store --------
+    var imgData = this.$store.getters.imageSrcGetters;
+    this.height = imgData.height;
+    this.width = imgData.width;
+    console.log(imgData.height);
+    //----x--------------x--------------x----------------
+
     //-- Canvas preliminary operations ------------------------------
     this.provider.context = this.$refs["my-canvas"].getContext("2d");
-    this.ctx = this.provider.context;
     //--x--------------x-----------------x-------------x-------------
   },
 

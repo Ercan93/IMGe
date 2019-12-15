@@ -42,8 +42,8 @@ export default new Vuex.Store({
                         state.processingImage = payload;
                 },
                 IMAGE_SRC_SET(state, payload) {
-                        state.imageSrc.width = payload[0];
-                        state.imageSrc.height = payload[1];
+                        state.imageSrc.width = payload.width;
+                        state.imageSrc.height = payload.height;
                 },
                 ROUTE_NAME_SET(state, payload) {
                         state.routeName = payload;

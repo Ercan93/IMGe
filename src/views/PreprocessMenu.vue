@@ -125,7 +125,10 @@ export default {
       //--x---------------x----------------x--------------------
 
       //-- Sending the height and width to store ---------------
-      this.$store.dispatch("imageSrcSet", [imgWidth, imgHeight]);
+      this.$store.dispatch("imageSrcSet", {
+        width: imgWidth,
+        height: imgHeight
+      });
       //--x-------------------x--------------x-------------------
     }, 500);
 
