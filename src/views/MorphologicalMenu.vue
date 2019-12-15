@@ -27,6 +27,7 @@ export default {
       image: null,
       imageData: null,
       processingImage: null,
+      myCanvas: null,
       width: null,
       height: null,
       resultEnabled: 0,
@@ -55,7 +56,28 @@ export default {
     this.provider.context = this.$refs["my-canvas"].getContext("2d");
     //--x--------------x-----------------x-------------x-------------
   },
+  methods: {
+    canvasGetImgData() {
+      this.imageData = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      this.imageDataProcess = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+    },
+    canvasSetImgData() {
+      this.$refs["my-canvas"]
+        .getContext("2d")
+        .putImageData(this.imageDataProcess, 0, 0);
+      this.resultEnabled = 1;
 
+      // Convert to Canvas image data to normal image----
+      var dataURL = this.$refs["my-canvas"].toDataURL();
+      this.$refs["result-img"].src = dataURL;
+      //-----------x---------------x----------------------
+      this.processingImage = this.$refs["result-img"].src;
+    }
+  },
   created() {
     //-- named route path for next button ----------------
     this.$store.dispatch("routeNameSet", "segmentation-menu");

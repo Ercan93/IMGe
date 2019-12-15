@@ -27,6 +27,7 @@ export default {
       image: null,
       imageData: null,
       processingImage: null,
+      myCanvas: null,
       width: null,
       height: null,
       resultEnabled: 0,
