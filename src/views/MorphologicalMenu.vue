@@ -7,8 +7,9 @@
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-secondary" @click="dilation">Dilation</button>
-        <button class="btn btn-secondary" @click="erosion">Erosion</button>
+        <button class="btn btn-secondary" @click="colorToBlackWhiteInit">colorToBlackWhite</button>
+        <button class="btn btn-secondary" @click="dilationInit">Dilation</button>
+        <button class="btn btn-secondary" @click="erosionInit">Erosion</button>
         <button class="btn btn-secondary" @click="opening">Opening</button>
         <button class="btn btn-secondary" @click="closing">Closing</button>
       </div>
@@ -79,11 +80,13 @@ export default {
       //-----------x---------------x----------------------
       this.processingImage = this.$refs["result-img"].src;
     },
-    erosion() {
+    erosionInit() {
       this.canvasGetImgData();
-      this.thresoldValue = this.thresold();
-      this.colorToBlackWhite();
-
+      setTimeout(() => {
+        this.erosion();
+      }, 500);
+    },
+    erosion() {
       for (var i = 1; i < this.width; i++) {
         for (var j = 1; j < this.height; j++) {
           var sum = 0;
@@ -107,9 +110,13 @@ export default {
         this.canvasSetImgData();
       }, 500);
     },
-    dilation() {
+    dilationInit() {
       this.canvasGetImgData();
-      this.colorToBlackWhite();
+      setTimeout(() => {
+        this.dilation();
+      }, 500);
+    },
+    dilation() {
       for (var i = 1; i < this.width; i++) {
         for (var j = 1; j < this.height; j++) {
           var sum = 0;
@@ -131,15 +138,18 @@ export default {
       }
       setTimeout(() => {
         this.canvasSetImgData();
-      }, 1000);
+      }, 500);
+    },
+
+    closing() {
+      setTimeout(() => {
+        this.dilationInit();
+      }, 500);
+      this.erosionInit();
     },
     opening() {
-      this.erosion();
-      this.dilation();
-    },
-    closing() {
-      this.dilation();
-      this.erosion();
+      this.dilationInit();
+      this.erosionInit();
     },
     thresold() {
       var colorSum = 0;
@@ -154,6 +164,13 @@ export default {
       var brightness = Math.floor(colorSum / (this.width * this.height));
       console.log(brightness);
       return brightness;
+    },
+    colorToBlackWhiteInit() {
+      this.canvasGetImgData();
+      this.thresoldValue = this.thresold();
+      setTimeout(() => {
+        this.colorToBlackWhite();
+      }, 1000);
     },
     colorToBlackWhite() {
       for (var x = 0; x < this.width; x++) {
@@ -175,6 +192,7 @@ export default {
           }
         }
       }
+      this.canvasSetImgData();
     }
   },
   created() {
