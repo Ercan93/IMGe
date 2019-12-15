@@ -28,6 +28,8 @@ export default {
       imageData: null,
       imageDataProcess: null,
       processingImage: null,
+      leftData: [0, 0],
+      rightData: [0, 0],
       myCanvas: null,
       height: null,
       width: null,
@@ -64,55 +66,6 @@ export default {
       setTimeout(() => {
         this.canvasSetImgData();
       }, 1000);
-    },
-    siyah_beyaz_cevirme() {
-      var imageDataCopy = this.$refs["my-canvas"]
-        .getContext("2d")
-        .getImageData(0, 0, this.width, this.height);
-      for (var x = 0; x < this.width; x++) {
-        for (var y = 0; y < this.height; y++) {
-          var loc = (y * this.width + x) * 4;
-          var avg =
-            (imageDataCopy.data[loc] +
-              imageDataCopy.data[loc + 1] +
-              imageDataCopy.data[loc + 2]) /
-            3;
-          if (avg > 138) {
-            imageDataCopy.data[loc] = 255;
-            imageDataCopy.data[loc + 1] = 255;
-            imageDataCopy.data[loc + 2] = 255; // White
-          } else {
-            imageDataCopy.data[loc] = 0;
-            imageDataCopy.data[loc + 1] = 0;
-            imageDataCopy.data[loc + 2] = 0; // Black
-          }
-        }
-      }
-      setTimeout(() => {
-        this.$refs["my-canvas"]
-          .getContext("2d")
-          .putImageData(imageDataCopy, 0, 0);
-        this.resultEnabled = 1;
-
-        var dataURL = this.$refs["my-canvas"].toDataURL();
-        this.$refs["result-img"].src = dataURL;
-
-        this.processingImage = this.$refs["result-img"].src;
-      }, 1000);
-    },
-    getCursorPosition(canvas, event, control) {
-      var rect = canvas.getBoundingClientRect();
-      var x = event.clientX - rect.left;
-      var y = event.clientY - rect.top;
-      if (control == "md") {
-        leftData[0] = x;
-        leftData[1] = y;
-        console.log("mouse down " + leftData);
-      } else {
-        rightData[0] = x;
-        rightData[1] = y;
-        console.log("mouse up " + rightData);
-      }
     },
     canvasGetImgData() {
       this.imageData = this.$refs["my-canvas"]
