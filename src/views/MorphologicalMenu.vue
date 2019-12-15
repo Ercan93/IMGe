@@ -27,8 +27,7 @@ export default {
       image: null,
       imageData: null,
       processingImage: null,
-      height: null,
-      width: null,
+      imageSrc: null,
       resultEnabled: 0,
       provider: {
         context: null
