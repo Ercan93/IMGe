@@ -2,7 +2,7 @@
   <div class="jumb">
     <span class="badge badge-success head-text">PreProcess Menu</span>
     <img :src="image" id="orgImg" v-show="false" />
-    <canvas v-show="false" width="300px" height="300px" ref="my-canvas"></canvas>
+    <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
     <div class="jumbotron bg-info">
       <div class="canvasPanel">
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
@@ -26,6 +26,7 @@ export default {
     return {
       image: null,
       imageData: null,
+      imageDataProcess: null,
       processingImage: null,
       myCanvas: null,
       height: null,
@@ -48,30 +49,20 @@ export default {
 
   methods: {
     grayScale() {
-      var imageDataCopy = this.$refs["my-canvas"]
-        .getContext("2d")
-        .getImageData(0, 0, this.width, this.height);
-      for (var i = 0; i < imageDataCopy.data.length; i += 4) {
+      this.canvasGetImgData();
+
+      for (var i = 0; i < this.imageDataProcess.data.length; i += 4) {
         var avg =
-          (imageDataCopy.data[i] +
-            imageDataCopy.data[i + 1] +
-            imageDataCopy.data[i + 2]) /
+          (this.imageDataProcess.data[i] +
+            this.imageDataProcess.data[i + 1] +
+            this.imageDataProcess.data[i + 2]) /
           3;
-        imageDataCopy.data[i] = avg; // red
-        imageDataCopy.data[i + 1] = avg; // green
-        imageDataCopy.data[i + 2] = avg; // blue
+        this.imageDataProcess.data[i] = avg; // red
+        this.imageDataProcess.data[i + 1] = avg; // green
+        this.imageDataProcess.data[i + 2] = avg; // blue
       }
       setTimeout(() => {
-        this.$refs["my-canvas"]
-          .getContext("2d")
-          .putImageData(imageDataCopy, 0, 0);
-        this.resultEnabled = 1;
-
-        // Convert to Canvas image data to normal image----
-        var dataURL = this.$refs["my-canvas"].toDataURL();
-        this.$refs["result-img"].src = dataURL;
-        //-----------x---------------x----------------------
-        this.processingImage = this.$refs["result-img"].src;
+        this.canvasSetImgData();
       }, 1000);
     },
     siyah_beyaz_cevirme() {
@@ -122,6 +113,26 @@ export default {
         rightData[1] = y;
         console.log("mouse up " + rightData);
       }
+    },
+    canvasGetImgData() {
+      this.imageData = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+      this.imageDataProcess = this.$refs["my-canvas"]
+        .getContext("2d")
+        .getImageData(0, 0, this.width, this.height);
+    },
+    canvasSetImgData() {
+      this.$refs["my-canvas"]
+        .getContext("2d")
+        .putImageData(this.imageDataProcess, 0, 0);
+      this.resultEnabled = 1;
+
+      // Convert to Canvas image data to normal image----
+      var dataURL = this.$refs["my-canvas"].toDataURL();
+      this.$refs["result-img"].src = dataURL;
+      //-----------x---------------x----------------------
+      this.processingImage = this.$refs["result-img"].src;
     }
   },
 

@@ -8,7 +8,7 @@
       </div>
       <div class="process-buttons">
         <button class="btn btn-secondary">Dilation</button>
-        <button class="btn btn-secondary">Erosion</button>
+        <button class="btn btn-secondary" @click="erosion">Erosion</button>
         <button class="btn btn-secondary">Opening</button>
         <button class="btn btn-secondary">Closing</button>
       </div>
@@ -28,6 +28,7 @@ export default {
       imageData: null,
       processingImage: null,
       myCanvas: null,
+      thresoldValue: null,
       width: null,
       height: null,
       resultEnabled: 0,
@@ -76,6 +77,69 @@ export default {
       this.$refs["result-img"].src = dataURL;
       //-----------x---------------x----------------------
       this.processingImage = this.$refs["result-img"].src;
+    },
+    erosion() {
+      this.canvasGetImgData();
+      this.thresoldValue = this.thresold();
+      this.colorToBlackWhite();
+
+      for (var i = 1; i < this.width; i++) {
+        for (var j = 1; j < this.height; j++) {
+          var sum = 0;
+          for (var n = 0; n < 3; n++) {
+            for (var m = 0; m < 3; m++) {
+              var veri = ((j - 1 + m) * this.width + (i - 1 + n)) * 4;
+              sum += this.imageData.data[veri];
+            }
+          }
+          var sira = (j * this.width + i) * 4;
+          if (sum > 254) {
+            this.imageDataProcess.data[sira] = 255;
+            this.imageDataProcess.data[sira + 1] = 255;
+            this.imageDataProcess.data[sira + 2] = 255;
+          }
+
+          sum = 0;
+        }
+      }
+      setTimeout(() => {
+        this.canvasSetImgData();
+      }, 500);
+    },
+    thresold() {
+      var colorSum = 0;
+      for (var i = 0; i < this.imageData.data.length; i += 4) {
+        var avg =
+          (this.imageData.data[i] +
+            this.imageData.data[i + 1] +
+            this.imageData.data[i + 2]) /
+          3;
+        colorSum += avg;
+      }
+      var brightness = Math.floor(colorSum / (this.width * this.height));
+      console.log(brightness);
+      return brightness;
+    },
+    colorToBlackWhite() {
+      for (var x = 0; x < this.width; x++) {
+        for (var y = 0; y < this.height; y++) {
+          var loc = (y * this.width + x) * 4;
+          var avg =
+            (this.imageData.data[loc] +
+              this.imageData.data[loc + 1] +
+              this.imageData.data[loc + 2]) /
+            3;
+          if (avg > this.threshold) {
+            this.imageDataProcess.data[loc] = 255;
+            this.imageDataProcess.data[loc + 1] = 255;
+            this.imageDataProcess.data[loc + 2] = 255; // White
+          } else {
+            this.imageDataProcess.data[loc] = 0;
+            this.imageDataProcess.data[loc + 1] = 0;
+            this.imageDataProcess.data[loc + 2] = 0; // Black
+          }
+        }
+      }
     }
   },
   created() {
