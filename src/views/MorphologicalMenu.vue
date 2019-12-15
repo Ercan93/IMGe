@@ -7,10 +7,10 @@
         <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
       </div>
       <div class="process-buttons">
-        <button class="btn btn-secondary">Dilation</button>
+        <button class="btn btn-secondary" @click="dilation">Dilation</button>
         <button class="btn btn-secondary" @click="erosion">Erosion</button>
-        <button class="btn btn-secondary">Opening</button>
-        <button class="btn btn-secondary">Closing</button>
+        <button class="btn btn-secondary" @click="opening">Opening</button>
+        <button class="btn btn-secondary" @click="closing">Closing</button>
       </div>
     </div>
 
@@ -27,6 +27,7 @@ export default {
       image: null,
       imageData: null,
       processingImage: null,
+      imageDataProcess: null,
       myCanvas: null,
       thresoldValue: null,
       width: null,
@@ -71,7 +72,7 @@ export default {
         .getContext("2d")
         .putImageData(this.imageDataProcess, 0, 0);
       this.resultEnabled = 1;
-
+      this.imageData = this.imageDataProcess;
       // Convert to Canvas image data to normal image----
       var dataURL = this.$refs["my-canvas"].toDataURL();
       this.$refs["result-img"].src = dataURL;
@@ -106,6 +107,40 @@ export default {
         this.canvasSetImgData();
       }, 500);
     },
+    dilation() {
+      this.canvasGetImgData();
+      this.colorToBlackWhite();
+      for (var i = 1; i < this.width; i++) {
+        for (var j = 1; j < this.height; j++) {
+          var sum = 0;
+          for (var n = 0; n < 3; n++) {
+            for (var m = 0; m < 3; m++) {
+              var veri = ((j - 1 + m) * this.width + (i - 1 + n)) * 4;
+              sum += this.imageData.data[veri];
+            }
+          }
+          var sira = (j * this.width + i) * 4;
+          if (sum < 255 * 9) {
+            this.imageDataProcess.data[sira] = 0;
+            this.imageDataProcess.data[sira + 1] = 0;
+            this.imageDataProcess.data[sira + 2] = 0;
+          }
+
+          sum = 0;
+        }
+      }
+      setTimeout(() => {
+        this.canvasSetImgData();
+      }, 1000);
+    },
+    opening() {
+      this.erosion();
+      this.dilation();
+    },
+    closing() {
+      this.dilation();
+      this.erosion();
+    },
     thresold() {
       var colorSum = 0;
       for (var i = 0; i < this.imageData.data.length; i += 4) {
@@ -129,7 +164,7 @@ export default {
               this.imageData.data[loc + 1] +
               this.imageData.data[loc + 2]) /
             3;
-          if (avg > this.threshold) {
+          if (avg > this.thresoldValue) {
             this.imageDataProcess.data[loc] = 255;
             this.imageDataProcess.data[loc + 1] = 255;
             this.imageDataProcess.data[loc + 2] = 255; // White

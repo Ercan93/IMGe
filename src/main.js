@@ -6,6 +6,7 @@ import routes from "./routes"
 import VueEaseljs from "vue-easeljs"
 import 'bootswatch/dist/sketchy/bootstrap.min.css';
 
+
 Vue.use(VueEaseljs);
 Vue.use(VueRouter);
 

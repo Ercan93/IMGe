@@ -10,6 +10,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "bootbox": "^5.3.4",
     "bootswatch": "^4.4.1",
     "vue": "^2.5.11",
     "vue-easeljs": "^0.1.13",
