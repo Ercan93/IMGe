@@ -57,6 +57,9 @@ export default {
       this.$refs["result-img"].src = dataURL;
       //-----------x---------------x----------------------
       this.processingImage = this.$refs["result-img"].src;
+      setTimeout(() => {
+        this.$store.dispatch("sourceImageSet", this.processingImage);
+      }, 500);
     },
     blurFilter() {
       this.canvasGetImgData();

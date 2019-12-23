@@ -9,7 +9,7 @@
       </div>
       <div class="process-buttons">
         <button class="btn btn-success" @click="grayScale">Gray Scale</button>
-        <button class="btn btn-success">Image zoom</button>
+        <button class="btn btn-success disabled">Image zoom</button>
         <button class="btn btn-success">Image Resize</button>
         <button class="btn btn-success">Image Crop</button>
       </div>
@@ -86,6 +86,9 @@ export default {
       this.$refs["result-img"].src = dataURL;
       //-----------x---------------x----------------------
       this.processingImage = this.$refs["result-img"].src;
+      setTimeout(() => {
+        this.$store.dispatch("sourceImageSet", this.processingImage);
+      }, 500);
     }
   },
 
