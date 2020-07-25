@@ -8,9 +8,9 @@
       </div>
       <div class="process-buttons">
         <button class="btn btn-warning text-dark" @click="thresold">Threshold</button>
-        <button class="btn btn-warning text-dark">BW image finding objects (neighborhood)</button>
-        <button class="btn btn-warning text-dark">Gray image object finding and show</button>
-        <button class="btn btn-warning text-dark">Color image finding objects</button>
+        <button class="btn btn-warning text-dark disabled">BW image finding objects (neighborhood)</button>
+        <button class="btn btn-warning text-dark disabled">Gray image object finding and show</button>
+        <button class="btn btn-warning text-dark disabled">Color image finding objects</button>
       </div>
     </div>
 

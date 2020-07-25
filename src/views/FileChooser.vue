@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="jumbotron jumb bg-info text-light">
       <p class="lead">Özellikler denemek için bir resim yükleyin.</p>
       <hr class="my-4" />
@@ -51,11 +51,11 @@ export default {
 
 <style scoped>
 .jumb {
-  margin-left: 350px;
-  margin-right: 350px;
   margin-top: 50px;
+  margin-left: 50px;
   height: 500px;
   display: flex;
+  width: 70vw;
   flex-direction: column;
   align-items: center;
 }

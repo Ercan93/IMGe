@@ -10,8 +10,8 @@
       <div class="process-buttons">
         <button class="btn btn-success" @click="grayScale">Gray Scale</button>
         <button class="btn btn-success disabled">Image zoom</button>
-        <button class="btn btn-success">Image Resize</button>
-        <button class="btn btn-success">Image Crop</button>
+        <button class="btn btn-success disabled">Image Resize</button>
+        <button class="btn btn-success disabled">Image Crop</button>
       </div>
     </div>
     <div class="result" v-show="resultEnabled">
