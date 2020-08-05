@@ -16,25 +16,20 @@
 
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Özellikler</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Hakkında</a>
-          </li>
+          <router-link class="nav-link" tag="li" to="/features">Özellikler</router-link>
+          <router-link class="nav-link" tag="li" to="/about">Hakkında</router-link>
         </ul>
       </div>
       <button
         v-if="$route.name != 'file-chooser'"
         class="btn btn-warning border-dark text-dark mr-3"
         @click="PreviousFunction"
-      >Previous</button>
+      >Geri</button>
       <button
         v-if="$route.name != 'segmentation-menu'"
         class="btn btn-warning border-dark font-weight-bold text-dark mr-5"
         @click="nextFunction"
-      >Next</button>
+      >İleri</button>
     </nav>
   </div>
 </template>
@@ -42,7 +37,7 @@
 export default {
   data() {
     return {
-      routeName: null
+      routeName: null,
     };
   },
   created() {},
@@ -53,8 +48,8 @@ export default {
     },
     PreviousFunction() {
       this.$router.go(-1);
-    }
-  }
+    },
+  },
 };
 </script>
 
