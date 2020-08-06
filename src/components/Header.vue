@@ -4,8 +4,8 @@
       <router-link class="navbar-brand" tag="a" to="/">IMGe</router-link>
 
       <div class="navbar-nav mr-auto">
-        <router-link class="nav-link" tag="a" to="/features">Özellikler</router-link>
-        <router-link class="nav-link" tag="a" to="/about">Hakkında</router-link>
+        <router-link class="nav-link" tag="a" to="/features">Features</router-link>
+        <router-link class="nav-link" tag="a" to="/about">About</router-link>
       </div>
 
       <div class="ml-auto">

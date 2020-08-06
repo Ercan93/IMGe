@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div class="container d-flex">
     <div class="jumbotron jumb bg-info text-light">
-      <p class="lead">Özellikler denemek için bir resim yükleyin.</p>
+      <p class="lead">Upload an image to try out the features.</p>
       <hr class="my-4" />
       <div class="pic">
         <picture-input
@@ -13,7 +13,7 @@
           button-class="btn"
           :custom-strings="{
         upload: '<h1>Heyoo!</h1>',
-        drag: 'Bir resim sürükle 😺'
+        drag: 'Drag a picture 😺'
       }"
           @change="onChange"
         ></picture-input>
@@ -40,12 +40,12 @@ export default {
       } else {
         console.log("Ahbab yanlış yoldasın!!");
       }
-    }
+    },
   },
   created() {
     // named route path for next button
     this.$store.dispatch("routeNameSet", "pre-process-menu");
-  }
+  },
 };
 </script>
 
