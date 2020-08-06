@@ -1,19 +1,20 @@
 <template>
-  <div class="jumb">
-    <span class="badge badge-warning head-text text-dark">Segmentation Menu</span>
-    <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
-    <div class="jumbotron bg-info">
-      <div class="canvasPanel">
-        <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
-      </div>
-      <div class="process-buttons">
-        <button class="btn btn-warning text-dark" @click="thresold">Threshold</button>
-        <button class="btn btn-warning text-dark disabled">BW image finding objects (neighborhood)</button>
-        <button class="btn btn-warning text-dark disabled">Gray image object finding and show</button>
-        <button class="btn btn-warning text-dark disabled">Color image finding objects</button>
+  <div class="container d-flex flex-wrap">
+    <div class="mt-5">
+      <span class="badge badge-warning head-text text-dark">Segmentation Menu</span>
+      <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
+      <div class="jumbotron bg-info">
+        <div class="canvasPanel">
+          <img ref="org-img" width="320px" class="imgClass" :src="image" alt />
+        </div>
+        <div class="process-buttons">
+          <button class="btn btn-warning text-dark" @click="thresold">Threshold</button>
+          <button class="btn btn-warning text-dark disabled">BW image finding objects (neighborhood)</button>
+          <button class="btn btn-warning text-dark disabled">Gray image object finding and show</button>
+          <button class="btn btn-warning text-dark disabled">Color image finding objects</button>
+        </div>
       </div>
     </div>
-
     <div class="result" v-show="resultEnabled">
       <span class="badge badge- head-text text-dark">Result</span>
       <img width="500px" ref="result-img" class="resultImg" alt />
@@ -34,8 +35,8 @@ export default {
       height: null,
       resultEnabled: 0,
       provider: {
-        context: null
-      }
+        context: null,
+      },
     };
   },
   methods: {
@@ -73,9 +74,9 @@ export default {
         colorSum += avg;
       }
       brightness = Math.floor(colorSum / (this.width * this.height));
-      console.log(brightness);
       this.thresoldValue = brightness;
-    }
+      alert("Threshold value:", brightness);
+    },
   },
   mounted() {
     //-- Get image in store -------------------------------
@@ -108,51 +109,6 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("processingImageSet", this.processingImage);
     next();
-  }
+  },
 };
 </script>
-
-<style scoped>
-.jumb {
-  margin-left: 100px;
-  margin-top: 15px;
-  display: block;
-}
-.jumbotron {
-  margin-top: 14px;
-  height: 450px;
-  width: 600px;
-  display: flex;
-  justify-content: space-around;
-}
-.result {
-  float: right;
-  justify-content: center;
-  width: 200px;
-  height: 300px;
-  margin-top: -490px;
-  margin-right: 365px;
-}
-
-.resultImg {
-  margin-top: 10px;
-  border: 3px solid black;
-  border-radius: 5px;
-}
-.head-text {
-  font-size: 25px;
-}
-span.head-text {
-  border: 2px solid black;
-}
-.process-buttons {
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
-}
-.process-buttons button {
-  margin-bottom: 15px;
-  margin-top: -5px;
-  margin-left: 15px;
-}
-</style>

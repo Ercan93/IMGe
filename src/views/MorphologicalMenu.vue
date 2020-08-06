@@ -1,21 +1,22 @@
 <template>
-  <div class="jumb">
-    <span class="badge badge-secondary head-text">Morphological Menu</span>
-    <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
-    <div class="jumbotron bg-info">
-      <div class="canvasPanel">
-        <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
-      </div>
-      <div class="process-buttons">
-        <button class="btn btn-secondary" @click="colorToBlackWhiteInit">colorToBlackWhite</button>
-        <button class="btn btn-secondary" @click="dilationInit">Dilation</button>
-        <button class="btn btn-secondary" @click="erosionInit">Erosion</button>
-        <button class="btn btn-secondary" @click="opening">Opening</button>
-        <button class="btn btn-secondary" @click="closing">Closing</button>
+  <div class="container d-flex flex-wrap">
+    <div class="mt-5">
+      <span class="badge badge-secondary head-text">Morphological Menu</span>
+      <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
+      <div class="jumbotron bg-info">
+        <div class="canvasPanel">
+          <img ref="org-img" width="320px" class="imgClass" :src="image" alt />
+        </div>
+        <div class="process-buttons">
+          <button class="btn btn-secondary" @click="colorToBlackWhiteInit">colorToBlackWhite</button>
+          <button class="btn btn-secondary" @click="dilationInit">Dilation</button>
+          <button class="btn btn-secondary" @click="erosionInit">Erosion</button>
+          <button class="btn btn-secondary" @click="opening">Opening</button>
+          <button class="btn btn-secondary" @click="closing">Closing</button>
+        </div>
       </div>
     </div>
-
-    <div class="result" v-show="resultEnabled">
+    <div class="result m-5" v-show="resultEnabled">
       <span class="badge badge-secondary head-text">Result</span>
       <img width="500px" ref="result-img" class="resultImg" alt />
     </div>
@@ -35,8 +36,8 @@ export default {
       height: null,
       resultEnabled: 0,
       provider: {
-        context: null
-      }
+        context: null,
+      },
     };
   },
 
@@ -196,7 +197,7 @@ export default {
         }
       }
       this.canvasSetImgData();
-    }
+    },
   },
   created() {
     //-- named route path for next button ----------------
@@ -214,51 +215,6 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("processingImageSet", this.processingImage);
     next();
-  }
+  },
 };
 </script>
-
-<style scoped>
-.jumb {
-  margin-left: 100px;
-  margin-top: 15px;
-  display: block;
-}
-.jumbotron {
-  margin-top: 14px;
-  height: 450px;
-  width: 600px;
-  display: flex;
-  justify-content: space-around;
-}
-.result {
-  float: right;
-  justify-content: center;
-  width: 200px;
-  height: 300px;
-  margin-top: -490px;
-  margin-right: 365px;
-}
-
-.resultImg {
-  margin-top: 10px;
-  border: 3px solid black;
-  border-radius: 5px;
-}
-.head-text {
-  font-size: 25px;
-}
-span.head-text {
-  border: 2px solid black;
-}
-.process-buttons {
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
-}
-.process-buttons button {
-  margin-bottom: 15px;
-  margin-top: -5px;
-  margin-left: 15px;
-}
-</style>

@@ -1,20 +1,22 @@
 <template>
-  <div class="jumb">
-    <span class="badge badge-success head-text">PreProcess Menu</span>
-    <img :src="image" id="orgImg" v-show="false" />
-    <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
-    <div class="jumbotron bg-info">
-      <div class="canvasPanel">
-        <img ref="org-img" width="400px" class="imgClass" :src="image" alt />
-      </div>
-      <div class="process-buttons">
-        <button class="btn btn-success" @click="grayScale">Gray Scale</button>
-        <button class="btn btn-success disabled">Image zoom</button>
-        <button class="btn btn-success disabled">Image Resize</button>
-        <button class="btn btn-success disabled">Image Crop</button>
+  <div class="container d-flex flex-wrap">
+    <div class="mt-5">
+      <span class="badge badge-success head-text">PreProcess Menu</span>
+      <img :src="image" id="orgImg" v-show="false" />
+      <canvas v-show="false" :width="width+'px'" :height="height+'px'" ref="my-canvas"></canvas>
+      <div class="jumbotron bg-info">
+        <div class="canvasPanel">
+          <img ref="org-img" width="320px" class="imgClass" :src="image" alt />
+        </div>
+        <div class="process-buttons">
+          <button class="btn btn-success" @click="grayScale">Gray Scale</button>
+          <button class="btn btn-success disabled">Image zoom</button>
+          <button class="btn btn-success disabled">Image Resize</button>
+          <button class="btn btn-success disabled">Image Crop</button>
+        </div>
       </div>
     </div>
-    <div class="result" v-show="resultEnabled">
+    <div class="result m-5" v-show="resultEnabled">
       <span class="badge badge-success head-text">Result</span>
       <img width="500px" ref="result-img" class="resultImg" alt />
     </div>
@@ -35,8 +37,8 @@ export default {
       width: null,
       resultEnabled: 0,
       provider: {
-        context: null
-      }
+        context: null,
+      },
     };
   },
 
@@ -89,7 +91,7 @@ export default {
       setTimeout(() => {
         this.$store.dispatch("sourceImageSet", this.processingImage);
       }, 500);
-    }
+    },
   },
 
   created() {
@@ -108,7 +110,7 @@ export default {
       //-- Sending the height and width to store ---------------
       this.$store.dispatch("imageSrcSet", {
         width: imgWidth,
-        height: imgHeight
+        height: imgHeight,
       });
       //--x-------------------x--------------x-------------------
     }, 500);
@@ -124,51 +126,6 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("processingImageSet", this.processingImage);
     next();
-  }
+  },
 };
 </script>
-
-<style scoped>
-.jumb {
-  margin-left: 100px;
-  margin-top: 15px;
-  display: block;
-}
-.jumbotron {
-  margin-top: 14px;
-  height: 450px;
-  width: 600px;
-  display: flex;
-  justify-content: space-around;
-}
-.result {
-  float: right;
-  justify-content: center;
-  width: 200px;
-  height: 300px;
-  margin-top: -530px;
-  margin-right: 365px;
-}
-
-.resultImg {
-  margin-top: 10px;
-  border: 3px solid black;
-  border-radius: 5px;
-}
-.head-text {
-  font-size: 25px;
-}
-span.head-text {
-  border: 2px solid black;
-}
-.process-buttons {
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
-}
-.process-buttons button {
-  margin-bottom: 15px;
-  margin-top: -5px;
-  margin-left: 15px;
-}
-</style>
