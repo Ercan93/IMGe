@@ -5,7 +5,7 @@
     <div v-for="item in featuresList">
       <span :class="'badge feature-title mt-5  head-text badge-'+item.css">{{item.title}}</span>
       <ul>
-        <li class="feature-name" v-for="feature in item.features">{{feature}}</li>
+        <li class="feature-name pt-3" v-for="feature in item.features">{{feature}}</li>
       </ul>
     </div>
   </div>

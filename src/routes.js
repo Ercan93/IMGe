@@ -4,6 +4,7 @@ import FilteringMenu from "./views/FilteringMenu";
 import MorphologicalMenu from "./views/MorphologicalMenu";
 import SegmentationMenu from "./views/SegmentationMenu";
 import Features from "./views/Features";
+import About from "./views/About";
 
 const routes = [
   { path: "/", component: FileChooser, name: "file-chooser" },
